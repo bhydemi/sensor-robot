@@ -1,0 +1,23 @@
+Sensor Robot - Distance to Steps Calculation
+=============================================
+
+Formula:
+  wheel radius        = 3 cm
+  wheel circumference = 2 * pi * radius = 18.8496 cm  (one full 200-step revolution)
+  steps per cm         = 200 / circumference = 10.6103 steps/cm
+  steps(distance_cm)   = round(distance_cm * steps_per_cm)
+
+Results:
+  For 10cm the robot showed 106 steps.
+  For 20cm the robot showed 212 steps.
+  For 30cm the robot showed 318 steps.
+  For 50cm the robot showed 531 steps.
+  For 100cm the robot showed 1061 steps.
+
+Distance (cm) | Steps
+--------------|------
+10            | 106
+20            | 212
+30            | 318
+50            | 531
+100           | 1061

@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "author": "Abdulhakeem Omotolani Yaqoob",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": -9.65, "attrs": {} },
+
+    { "type": "wokwi-led", "id": "led1", "top": -120, "left": -40, "attrs": { "color": "red", "label": "TILT" } },
+    { "type": "wokwi-resistor", "id": "r1", "top": -100, "left": -40, "rotate": 90, "attrs": { "value": "220" } },
+    { "type": "wokwi-pushbutton", "id": "btn1", "top": -120, "left": 40, "attrs": { "color": "blue" } },
+    { "type": "wokwi-buzzer", "id": "buzzer1", "top": -120, "left": 120, "attrs": {} },
+
+    { "type": "wokwi-hc-sr04", "id": "hcsr04_1", "top": -120, "left": 220, "attrs": {} },
+
+    { "type": "board-ssd1306", "id": "oled1", "top": 40, "left": -80, "attrs": {} },
+    { "type": "wokwi-mpu6050", "id": "mpu1", "top": 40, "left": 40, "attrs": {} },
+
+    { "type": "wokwi-a4988", "id": "a4988_l", "top": 140, "left": -100, "attrs": {} },
+    { "type": "wokwi-stepper-motor", "id": "stepper_l", "top": 140, "left": -20, "attrs": { "size": "8", "arrow": "orange" } },
+
+    { "type": "wokwi-a4988", "id": "a4988_r", "top": 140, "left": 100, "attrs": {} },
+    { "type": "wokwi-stepper-motor", "id": "stepper_r", "top": 140, "left": 180, "attrs": { "size": "8", "arrow": "orange" } }
+  ],
+  "connections": [
+    ["esp:12", "r1:1", "orange", []],
+    ["r1:2", "led1:A", "orange", []],
+    ["led1:C", "esp:GND.1", "black", []],
+
+    ["esp:27", "btn1:1.l", "orange", []],
+    ["btn1:2.l", "esp:GND.1", "black", []],
+
+    ["esp:15", "buzzer1:2", "orange", []],
+    ["buzzer1:1", "esp:GND.1", "black", []],
+
+    ["esp:5", "hcsr04_1:TRIG", "orange", []],
+    ["esp:18", "hcsr04_1:ECHO", "yellow", []],
+    ["esp:3V3", "hcsr04_1:VCC", "red", []],
+    ["esp:GND.1", "hcsr04_1:GND", "black", []],
+
+    ["esp:21", "oled1:SDA", "green", []],
+    ["esp:22", "oled1:SCL", "blue", []],
+    ["esp:3V3", "oled1:VCC", "red", []],
+    ["esp:GND.1", "oled1:GND", "black", []],
+
+    ["esp:21", "mpu1:SDA", "green", []],
+    ["esp:22", "mpu1:SCL", "blue", []],
+    ["esp:3V3", "mpu1:VCC", "red", []],
+    ["esp:GND.1", "mpu1:GND", "black", []],
+
+    ["esp:3V3", "a4988_l:VDD", "red", []],
+    ["esp:GND.1", "a4988_l:GND", "black", []],
+    ["esp:13", "a4988_l:STEP", "purple", []],
+    ["esp:GND.1", "a4988_l:DIR", "gray", []],
+    ["a4988_l:RESET", "a4988_l:SLEEP", "gray", []],
+    ["a4988_l:1A", "stepper_l:B+", "blue", []],
+    ["a4988_l:1B", "stepper_l:B-", "blue", []],
+    ["a4988_l:2A", "stepper_l:A+", "green", []],
+    ["a4988_l:2B", "stepper_l:A-", "green", []],
+
+    ["esp:3V3", "a4988_r:VDD", "red", []],
+    ["esp:GND.1", "a4988_r:GND", "black", []],
+    ["esp:19", "a4988_r:STEP", "purple", []],
+    ["esp:GND.1", "a4988_r:DIR", "gray", []],
+    ["a4988_r:RESET", "a4988_r:SLEEP", "gray", []],
+    ["a4988_r:1A", "stepper_r:B+", "blue", []],
+    ["a4988_r:1B", "stepper_r:B-", "blue", []],
+    ["a4988_r:2A", "stepper_r:A+", "green", []],
+    ["a4988_r:2B", "stepper_r:A-", "green", []]
+  ],
+  "dependencies": {}
+}
