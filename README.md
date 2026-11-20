@@ -87,7 +87,9 @@ unconnected (Wokwi defaults them to enabled/full-step). Each driver's
 3. Replace `main.py` with this folder's `main.py`.
 4. Add `buzzer.py`, `hcsr04.py`, `stepper.py`, `mpu6050.py`, and `oled.py` as
    new files with the contents from this folder.
-5. Run it, open the serial monitor to watch prints, and watch the OLED panel
+5. Add this `README.md` itself as a new file in the Wokwi project too, so it
+   is included when the project is exported/submitted as a ZIP.
+6. Run it, open the serial monitor to watch prints, and watch the OLED panel
    in the diagram.
 
 ## Testing checklist (per the project's Part 1-5 instructions)

@@ -32,18 +32,24 @@ STEPS_PER_CM = STEPS_PER_REVOLUTION / WHEEL_CIRCUMFERENCE_CM
 TILT_THRESHOLD = 12000
 
 # --- Components ------------------------------------------------------------
+# LED: lit only while the robot is in the TILTED abort state.
 led = Pin(LED_PIN, Pin.OUT)
 led.value(0)
 
+# Button: active-low (reads 0 when pressed) thanks to the internal pull-up.
 button = Pin(BUTTON_PIN, Pin.IN, Pin.PULL_UP)
 
+# Buzzer: beeps on button press, on reaching the target, and 3x on a tilt.
 buzzer = Buzzer(BUZZER_PIN)
 
+# Drive motors: one A4988 + stepper pair per wheel.
 left_stepper = Stepper(LEFT_STEP_PIN)
 right_stepper = Stepper(RIGHT_STEP_PIN)
 
+# Ultrasonic sensor: measures the obstacle distance to drive toward.
 sensor = HCSR04(trigger_pin=TRIGGER_PIN, echo_pin=ECHO_PIN)
 
+# OLED + accelerometer share the same I2C bus.
 i2c = SoftI2C(scl=Pin(I2C_SCL_PIN), sda=Pin(I2C_SDA_PIN))
 display = oled.I2C(128, 64, i2c)
 accelerometer = accel(i2c)
@@ -70,20 +76,27 @@ def get_steps_from_distance(distance_cm):
 
 
 def is_tilted(values):
+    """Returns True if the MPU6050's Y-axis reading exceeds the tip-over
+    threshold in either direction."""
     return values["AcY"] > TILT_THRESHOLD or values["AcY"] < -TILT_THRESHOLD
 
 
 while True:
+    # IDLE: wait for the user to press the button before doing anything.
     led.value(0)
     show(["Press button", "to start"])
     wait_button_press()
 
+    # Acknowledge the press with a single beep.
     buzzer.beep_once()
 
+    # Measure the obstacle distance and convert it into a step count.
     distance = sensor.distance_cm()
     steps = get_steps_from_distance(distance)
     show(["Dist: {}cm".format(distance), "Steps: {}".format(steps)])
 
+    # Drive one step at a time so a tilt can be caught immediately instead
+    # of after a whole batch of steps has already happened.
     reached = True
     for _ in range(steps):
         left_stepper.move_one_step()
@@ -94,6 +107,7 @@ while True:
             reached = False
             break
 
+    # Report the outcome, then pause before returning to IDLE.
     if reached:
         show(["REACHED"])
         buzzer.beep_once()
